@@ -1,0 +1,22 @@
+---
+- hosts: manjaro
+  remote_user: cody
+  become: yes
+  tasks:
+        - name: update & upgrade
+          pacman:
+                update_cache: yes
+                upgrade: yes
+
+        - name: install neovim
+          pacman:
+                  name:
+                          - neovim
+                          - nodejs
+                          - yarn
+                          - python-pip
+                          - xclip
+
+        - name: install pynvim globally
+          command:
+                  cmd: pip install pynvim

@@ -1,0 +1,17 @@
+---
+- hosts: manjaro
+  remote_user: cody
+  #  become: true
+  tasks:
+  
+        - name: install yadm
+          become_user: aur_builder
+          aur:
+                  use: yay
+                  name: yadm
+                  extra_args: --noprovides --answerdiff=None --answerclean=All
+
+        - name: clone yadm
+          become_user: cody
+          command:
+                  cmd: yadm clone git@github.com:Coleej/yadm.git -f --no-bootstrap

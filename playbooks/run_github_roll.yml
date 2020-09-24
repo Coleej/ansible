@@ -1,0 +1,5 @@
+---
+- hosts: manjaro
+  remote_user: cody
+  roles:
+          - role: '/root/ansible/roles/ansible-git'

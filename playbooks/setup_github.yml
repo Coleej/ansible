@@ -1,0 +1,33 @@
+---
+- hosts: manjaro
+  remote_user: cody
+
+  vars:
+          ssh_key_filename: id_rsa.pub
+  
+  tasks:
+  
+        - name: generate SSH key "{{ssh_key_filename}}"
+          openssh_keypair:
+                  path: "~/.ssh/{{ssh_key_filename}}"
+                  type: rsa
+                  size: 4096
+                  state: present
+                  force: no
+
+        - name: Read SSH public key to authorize
+          shell: cat ~/.ssh/{{ssh_key_filename}}
+          register: ssh_pub_key
+
+        - name: Add SSH public key to GitHub account
+          uri:
+                  url: https://api.github.com/:
+
+        - github_deploy_key:
+                owner: "Coleej"
+                repo: "yadm"
+                name: "manjaro-ansible"
+                key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+                read_only: yes
+                username: "codyjohnson144@gmail.com"
+                password: "sHFHo5QNFTgPl0k"

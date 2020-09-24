@@ -1,0 +1,20 @@
+---
+- hosts: all
+  remote_user: cody
+  #  vars:
+  #        pubkey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCwHPM14Kjr8AaOPJNsC3pxgANIrFswWMj0HCZEqzXIBV16O37vGXra8PDiTolqvrqO0V/qWA/RXGiBi0Zktu/LjeJxCr8kYo2l3kZFYEgN6EvM7OhNYqbouncc9PXZGNY+j40kO88v1kUfM06YYLvi5UAsA2uMwyRJ6VHlSLYcGP1jHb2Pd4EDZsxJTCjjBe46p5sLm5E8mE6XkAGeSLarFDtnuETXeH0c1jcSJz+AsK0x/5/ePtiN9VVqvhVLq9eQwVKa4h3aMIS+5dG9EcaOBb7Occ5hRDM5/bzTlmSwq4r6BHshVY3Hs2cwehjCed3c93fxajMmaWoKPk/bezbz root@ansible"
+  tasks:
+          - name: make direcotry
+            file:
+                    path: "/home/cody/.ssh"
+                    state: directory
+          
+          - name: create empty file
+            file:
+                    path: "/home/cody/.ssh/authorized_keys"
+                    state: touch
+          
+          - name: put pubkey
+            lineinfile:
+                    path: "/home/cody/.ssh/authorized_keys"
+                    line: "{{ cnode_pubkey }}"

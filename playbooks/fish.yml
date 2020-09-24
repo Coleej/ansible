@@ -1,0 +1,53 @@
+---
+- hosts: manjaro
+  remote_user: cody
+  tasks:
+  
+          #- name: remove fish
+          #become: cody
+          #pacman:
+                  #name: fish
+                  #state: absent
+        
+                  #- name: install fish-git
+          #aur:
+                  #use: yay
+                  #                  name: fish-git
+#                  extra_args: --noprovides --answerdiff=None --answerclean=All
+
+        - name: clone fzf
+          become_user: cody
+          git:
+                  clone: yes
+                  dest: ~/.config/fzf
+                  repo: https://github.com/junegunn/fzf.git
+                  depth: 1
+
+        - name: install fzf
+          become_user: cody
+          command: ~/.config/fzf/install --all --xdg --no-bash --no-zsh
+
+        - name: Download fisher
+          uri:
+                  url: https://git.io/fisher
+                  creates: ~/.config/fish/functions/fisher.fish
+                  dest: ~/.config/fish/functions/fisher.fish
+                  
+        - name: configure fish
+          become_user: cody
+          user:
+                  name: 'cody'
+                  shell: '/usr/bin/fish'
+
+        - name: fisher
+          command: fish -c fisher
+          ignore_errors: yes
+
+        - name: fisher fzf
+          command: fish -c "fisher add jethrokuan/fzf"
+        
+        - name: fisher z
+          command: fish -c "fisher add jethrokuan/z"
+        
+        - name: fisher pisces
+          command: fish -c "fisher add laughedlic/pisces"
